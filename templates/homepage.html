@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeCD</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style>
+        .m-p {
+            font-size: 16px;
+            text-align: justify;
+            text-justify: inter-ideograph;
+            letter-spacing: 1px !important;
+        }
+
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="#" class="active m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container m-padded-tb-big">
+    <div class="ui segment">
+        <div class="ui mobile reversed stackable grid">
+            <div class="ui wide column">
+                <a href="#" target="_blank">
+                    <img class="ui medium left floated rounded image"
+                         src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/homepage/homepageProfile.1qgjfu9zhsqo.jpg"
+                         alt=""/>
+                </a>
+                <h1 class="ui header">Welcome to TeCD (The eccDNA Collection Database)</h1>
+                <p class="m-p">In eukaryotes, there is a special class of circular DNA molecules, which are separated or
+                    detached from the normal genome, dissociated from the chromosome genome, and participate in
+                    physiological or pathological processes in a special way. Because they are independent DNA molecules
+                    outside the chromosome, they are collectively referred to as extrachromosomal DNA, and they are
+                    often circular, so they are called extrachromosomal circular DNA, or eccDNA for short. The particles
+                    of eccDNA is usually less than 1 kb and invisible by light microscopy. TeCD attempts to collect all
+                    existing information about eccDNA. For now, TeCD has been collecting the molecular information of
+                    eccDNA for Homo Sapiens and Saccharomyces Cerevisiae. The researchers can search the gene or
+                    location associated eccDNA from TeCD, and detect the sequence associated genes by BLAST tool.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="ui stackable grid m-margin-top">
+        <div class="five wide column">
+            <a href="/search">
+                <div class="ui centered raised link card">
+                    <img class="ui fluid image"
+                         src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/homepage/homepageBtn_search.2u4ygo8r31q0.png">
+                </div>
+            </a>
+        </div>
+        <div class="six wide column">
+            <a href="/blast">
+                <div class="ui centered raised link card">
+                    <img class="ui fluid image"
+                         src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/homepage/homepageBtn_blast.3p51ondkse00.png">
+                </div>
+            </a>
+        </div>
+        <div class="five wide column">
+            <a href="/contribute">
+                <div class="ui centered raised link card">
+                    <img class="ui fluid image"
+                         src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/homepage/homepageBtn_contribute.25uautlppla8.png">
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="ui stackable grid m-margin-top">
+        <div class="wide column">
+            <img class="ui fluid rounded bordered image"
+                 src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/homepage/homepageChart.5iwijui7t8w0.png">
+        </div>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>

@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contribute Data</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style>
+        .m-p {
+            font-size: 16px;
+            text-align: justify;
+            text-justify: inter-ideograph;
+            letter-spacing: 1px !important;
+        }
+
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="/homepage" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="active m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container m-padded-tb-big">
+    <div class="ui top attached segment">
+        <h1 class="ui dividing header">
+            <i class="bookmark teal icon"></i>
+            <div class="content">
+                eccDNA User Upload Instructions
+            </div>
+        </h1>
+        <p class="m-p"> Users can upload eccDNA sequence files to us. The file must contain the chromosome position
+            (start and end) of
+            the sequence. The file format can be excel or text file.
+        </p>
+    </div>
+    <div class="ui bottom attached segment">
+        <div class="ui teal segment">
+            <h2 class="ui dividing header">Submit Data</h2>
+            <form class="ui form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h3 for="Data-organism" class="ui header">Select Organism of Data</h3>
+                <div class="ui left icon input">
+                    <i class="database icon"></i>
+                    <input type="text" id="Data-organism" name="Data-organism" placeholder="Data-Organism" value=""/>
+                </div>
+                <br>
+                <h3 for="user-email" class="ui header">User Email</h3>
+                <div class="ui left icon input">
+                    <i class="mail icon"></i>
+                    <input type="text" id="user-email" name="user-email" placeholder="Email" value=""/>
+                </div>
+                <br>
+                <br>
+                <input type="file" id="customfile" name="customfile"
+                       accept=".xlsx, .xlsm, .xltx, .xls, .xla, .xlr, .txt, .csv" required>
+                <br>
+                <br>
+                <input class="ui teal button" type="submit" id="upload_button" value="Submit">
+                <br>
+                <br>
+                <p class="m-p">We try to make the content submission procedures easy for the user, please <a
+                        href="mailto:1918856220@qq.com"> email </a> us if you have any questions with a brief
+                    description
+                    of the data you are trying to submit.</p>
+                <br>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $("#upload_button").click(function () {
+        var organism = $("#Data-organism").val();
+        var useremail = $("#user-email").val();
+        var upload_file = $("#costomfile")[0].files[0];
+        var formData = new FormData();
+        formData.append("user-email", useremail);
+        formData.append("costomfile", upload_file);
+        $.ajax({
+            url: "/upload_file/",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                alert("上传成功!")
+            }
+        });
+    })
+</script>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>

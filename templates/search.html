@@ -1,0 +1,519 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style type="text/css">
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        table caption {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 1em 0;
+        }
+
+        th, td {
+            text-align: center;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+    <script type="text/javascript">
+        function Go(inputPage) {
+            window.location.href = "?curTable={{ getOrganism }}&page=" + inputPage;
+        }
+
+        function changeKey(key) {
+            document.getElementById("inputKey").value = key;
+        };
+        localStorage.setItem('selectItem', 0);
+        $(function () {
+            if (localStorage.getItem('selectItem')) {
+                $("#selectItem option").eq(localStorage.getItem('selectItem')).prop('selected', true);
+                var vs = localStorage.getItem('selectItem')
+                if (vs == 0) {
+                    document.getElementById("inputKey").value = "";
+                    $("#inputKey").hide();
+                    $("#exampleId").hide();
+                    $("#exampleGene").hide();
+                    $("#exampleChrom").hide();
+                }
+                if (vs == 1) {
+                    $("#inputKey").show();
+                    $("#exampleId").show();
+                    $("#exampleGene").hide();
+                    $("#exampleChrom").hide();
+                }
+                if (vs == 2) {
+                    $("#inputKey").show();
+                    $("#exampleId").hide();
+                    $("#exampleGene").show();
+                    $("#exampleChrom").hide();
+                }
+                if (vs == 3) {
+                    $("#inputKey").show();
+                    $("#exampleId").hide();
+                    $("#exampleGene").hide();
+                    $("#exampleChrom").show();
+                }
+            }
+            $("#selectItem").on('change', function () {
+                localStorage.setItem('selectItem', $('option:selected', this).index());
+                var vs = localStorage.getItem('selectItem')
+                if (vs == 0) {
+                    document.getElementById("inputKey").value = "";
+                    $("#inputKey").hide();
+                    $("#exampleId").hide();
+                    $("#exampleGene").hide();
+                    $("#exampleChrom").hide();
+                }
+                if (vs == 1) {
+                    $("#inputKey").show();
+                    $("#exampleId").show();
+                    $("#exampleGene").hide();
+                    $("#exampleChrom").hide();
+                }
+                if (vs == 2) {
+                    $("#inputKey").show();
+                    $("#exampleId").hide();
+                    $("#exampleGene").show();
+                    $("#exampleChrom").hide();
+                }
+                if (vs == 3) {
+                    $("#inputKey").show();
+                    $("#exampleId").hide();
+                    $("#exampleGene").hide();
+                    $("#exampleChrom").show();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="/homepage" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="active m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container">
+    <p></p>
+    <h1 class="ui header">
+        <i class="teal search icon"></i>
+        <div class="content">
+            Search
+            <div class="sub header">Searching the database by ID, gene symbol, and chromosome.</div>
+        </div>
+    </h1>
+    <div class="ui teal segment m-margin-top m-margin-bottom-large">
+        <form method="post" action="" class="ui large form">
+            {% csrf_token %}
+            <div class="ui stackable grid">
+                <div class="four wide column">
+                    <h3 class="ui header">
+                        <i class="database icon"></i>
+                        <div class="content">Select Dataset</div>
+                    </h3>
+                    <select name="searchTable" class="ui large dropdown fluid label" id="select">
+                        <option value="All_Databases">All Datasets</option>
+                        <option value="SC">Saccharomyces Cerevisiae</option>
+                        <option value="HOMO">Homo Sapiens</option>
+                    </select>
+                </div>
+                <div class="three wide column">
+                    <h3 class="ui header">
+                        <i class="list icon"></i>
+                        <div class="content">Select Item
+                            <text style="color: red">*</text>
+                        </div>
+                    </h3>
+                    <select id="selectItem" name="searchItem" class="ui large dropdown fluid label"
+                            onclick="getItemValue()">
+                        <option value="All_Items">All Items</option>
+                        <option value="ID">ID</option>
+                        <option value="GENE">GENE</option>
+                        <option value="CHROM">CHROM</option>
+                    </select>
+                </div>
+                <div class="nine wide column">
+                    <h3 class="ui header">
+                        <i class="edit outline icon"></i>
+                        <div class="content">Search</div>
+                    </h3>
+                    <div class="ui action fluid input">
+                        <input id="inputKey" type="text" name="searchKey" value="" placeholder="Please input ...">
+                        <button type="submit" class="ui teal button">Search</button>
+                    </div>
+                    <div class="ui tiny info message" id="exampleId">
+                        <div class="header">
+                            <i>EXAMPLE：</i>
+                            <button id="ecc_sc_A100002021" onclick="changeKey(id)">ecc_sc_A100002021</button>
+                            <button id="ecc_H_A100002021" onclick="changeKey(id)">ecc_H_A100002021</button>
+                        </div>
+                    </div>
+                    <div class="ui mini info message" id="exampleGene">
+                        <div class="header">
+                            <i>EXAMPLE：</i>
+                            <button id="IDH1" onclick="changeKey(id)">IDH1</button>
+                            <button id="HSPG2" onclick="changeKey(id)">HSPG2</button>
+                        </div>
+                    </div>
+                    <div class="ui mini info message" id="exampleChrom">
+                        <div class="header">
+                            <i>EXAMPLE：</i>
+                            <button id="chrIX" onclick="changeKey(id)">chrIX</button>
+                            <button id="chrMT" onclick="changeKey(id)">chrMT</button>
+                            <button id="chr8" onclick="changeKey(id)">chr8</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <h1 class="ui header">
+        <i class="teal book icon"></i>
+        <div class="content">
+            Organism Browse
+            <div class="sub header">Click the following button to view the corresponding data information.</div>
+        </div>
+    </h1>
+    <div class="ui teal segment">
+        <div class="ui two column stackable grid">
+            <form class="ui column">
+                <button type="submit" name="curTable" value="sc" tabindex="0" class="ui large fluid button">
+                    Saccharomyces
+                    Cerevisiae
+                </button>
+            </form>
+            <form class="ui column">
+                <button type="submit" name="curTable" value="homo" tabindex="1" class="ui large fluid button">Homo
+                    Sapiens
+                </button>
+            </form>
+        </div>
+        {% if results.0 %}
+            <table class="ui very compact selectable striped celled table">
+                <caption>The Information for {{ Organism }}</caption>
+                <thead>
+                <tr>
+                    <th width="20%">ID</th>
+                    <th width="15%">CHROM</th>
+                    <th width="10%">START</th>
+                    <th width="10%">END</th>
+                    <th width="10%">LENGTH</th>
+                    <th width="35%">SEQUENCE</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td width="20%"><a
+                                href="http://www.eccdna.org:2022/detail?itemID={{ result.0 }}">{{ result.0 }}</a>
+                        </td>
+                        <td width="15%">{{ result.1 }}</td>
+                        <td width="10%">{{ result.2 }}</td>
+                        <td width="10%">{{ result.3 }}</td>
+                        <td width="10%">{{ result.4 }}</td>
+                        <td width="35%">{{ result.5 }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="6"><p class="m-text">A total of <strong style="color: red">{{ resultsSum }}</strong>
+                        data were searched!</p></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="m-margin-top m-center">
+                {% if results.has_previous %}
+                    <a class='active' href="?curTable={{ getOrganism }}&page={{ results.previous_page_number }}">
+                        <button class="ui left labeled icon button"><i class="left arrow icon"></i>Last</button>
+                    </a>
+                {% endif %}
+                <span class="current" style="font-size: larger; font-weight: bolder; margin: 0 20px 0 20px;">
+                    Page
+                    <input type="number"
+                           min="1"
+                           max="{{ results.paginator.num_pages }}"
+                           onkeydown="var e=window.event || arguments[0]; if(e.keyCode==13){ Go(value) }"
+                           oninput="if(value>{{ results.paginator.num_pages }}) value={{ results.paginator.num_pages }}; if(value<1) value=1"
+                           placeholder="{{ results.number }}">
+                    of {{ results.paginator.num_pages }}
+                </span>
+                {% if results.has_next %}
+                    <a class='active' href="?curTable={{ getOrganism }}&page={{ results.next_page_number }}">
+                        <button class="ui right labeled icon button"><i class="right arrow icon"></i>Next</button>
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+    <h1 class="ui header">
+        <i class="teal chart bar icon"></i>
+        <div class="content">
+            Analysis Results
+            <div class="sub header">The simple analysis for Saccharomyces Cerevisiae and Homo Sapiens.</div>
+        </div>
+    </h1>
+    <div class="ui teal top attached segment" style="height: 100%">
+        <div id="Column chart_sc" style="height: 500%"></div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+        <script type="text/javascript">
+            var dom_sc = document.getElementById("Column chart_sc");
+            var myChart_sc = echarts.init(dom_sc);
+            var app_sc = {};
+            var option_sc;
+            var dataAxis_sc = ['chrI', 'chrII', 'chrIII', 'chrIV', 'chrV', 'chrVI', 'chrVII', 'chrVIII', 'chrIX', 'chrX', 'chrXI', 'chrXII', 'chrXIII', 'chrXIV', 'chrXV',
+                'chrXVI'];
+            var data_sc = [28, 94, 37, 165, 66, 32, 99, 77, 44, 71, 58, 125, 74, 73, 107, 114];
+            var yMax_sc = 500;
+            option_sc = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                title: {
+                    left: 'center',
+                    text: 'Saccharomyces Cerevisiae Dataset',
+                    textStyle: {
+                        fontSize: 30,
+                    }
+                },
+                xAxis: {
+                    data: dataAxis_sc,
+
+                    axisLabel: {
+                        inside: true,
+                        textStyle: {
+                            color: '#050505'
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                dataZoom: [
+                    {
+                        type: 'inside'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'eccDNA number',
+                        type: 'bar',
+                        showBackground: true,
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#efa8d8'},
+                                    {offset: 0.5, color: '#ef5bca'},
+                                    {offset: 1, color: '#f018a8'}
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(
+                                    0, 0, 0, 1,
+                                    [
+                                        {offset: 0, color: '#f018a8'},
+                                        {offset: 0.7, color: '#ef5bca'},
+                                        {offset: 1, color: '#efa8d8'}
+                                    ]
+                                )
+                            }
+                        },
+                        data: data_sc
+                    }
+                ]
+            };
+            var zoomSize = 6;
+            myChart_sc.on('click', function (params) {
+                const the_sc_chrom = dataAxis_sc[params.dataIndex]
+                window.location.href = "/search/searchResult/?table=SC&item=CHROM&key=" + the_sc_chrom;
+                myChart_sc.dispatchAction({
+                    type: 'dataZoom',
+                    startValue: dataAxis_sc[Math.max(params.dataIndex - zoomSize / 2, 0)],
+                    endValue: dataAxis_sc[Math.min(params.dataIndex + zoomSize / 2, data_sc.length - 1)]
+                });
+            });
+            if (option_sc && typeof option_sc === 'object') {
+                myChart_sc.setOption(option_sc);
+
+            }
+        </script>
+    </div>
+    <div class="ui teal bottom attached segment" style="height: 100%">
+        <div id="Column chart_H" style="height: 500%"></div>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+        <script type="text/javascript">
+            var dom_h = document.getElementById("Column chart_H");
+            var myChart_h = echarts.init(dom_h);
+            var app_h = {};
+            var option_h;
+            var dataAxis_h = ['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8', 'chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15', 'chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21', 'chr22', 'chrMT', 'chrX', 'chrY'];
+            var data_h = [14748, 13518, 9558, 7773, 9793, 10195, 10866, 9800, 8415, 10465, 8985, 10733, 5047, 6552, 6220, 7126, 8673, 4584, 8563, 5267, 2739, 4126, 112, 9018, 418];
+            var yMax_h = 500;
+            option_h = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                title: {
+                    text: 'Homo Sapiens Dataset',
+                    left: 'center',
+                    textStyle: {
+                        fontSize: 30,
+                    }
+                },
+                xAxis: {
+                    data: dataAxis_h,
+                    axisLabel: {
+                        inside: true,
+                        textStyle: {
+                            color: '#050505'
+                        }
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    z: 10
+                },
+                yAxis: {
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: '#999'
+                        }
+                    }
+                },
+                dataZoom: [
+                    {
+                        type: 'inside'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'eccDNA number',
+                        type: 'bar',
+                        showBackground: true,
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(
+                                0, 0, 0, 1,
+                                [
+                                    {offset: 0, color: '#e4efa8'},
+                                    {offset: 0.5, color: '#bfce3f'},
+                                    {offset: 1, color: '#8bbd03'}
+                                ]
+                            )
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                color: new echarts.graphic.LinearGradient(
+                                    0, 0, 0, 1,
+                                    [
+                                        {offset: 0, color: '#8bbd03'},
+                                        {offset: 0.7, color: '#bfce3f'},
+                                        {offset: 1, color: '#e4efa8'}
+                                    ]
+                                )
+                            }
+                        },
+                        data: data_h
+                    }
+                ]
+            };
+            var zoomSize = 6;
+            myChart_h.on('click', function (params) {
+                const the_h_chrom = dataAxis_h[params.dataIndex]
+                window.location.href = "/search/searchResult/?table=HOMO&item=CHROM&key=" + the_h_chrom;
+                myChart_h.dispatchAction({
+                    type: 'dataZoom',
+                    startValue: dataAxis_h[Math.max(params.dataIndex - zoomSize / 2, 0)],
+                    endValue: dataAxis_h[Math.min(params.dataIndex + zoomSize / 2, data_h.length - 1)]
+                });
+            });
+            if (option_h && typeof option_h === 'object') {
+                myChart_h.setOption(option_h);
+            }
+        </script>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>

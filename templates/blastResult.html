@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style type="text/css">
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+
+        table caption {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 1em 0;
+        }
+
+        th, td {
+            text-align: center;
+            word-break: keep-all;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="/homepage" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="active m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container m-padded-tb-big">
+    <div class="ui segment">
+        <table class="ui very compact selectable sortable striped celled large table">
+            <caption>The Result Sequences of Blast</caption>
+            <thead>
+            <tr>
+                <th width="">ID</th>
+                <th width="">CHROM</th>
+                <th width="">START</th>
+                <th width="">END</th>
+                <th width="">Score</th>
+                <th width="">E_Value</th>
+                {% if resultColumn == 7 %}
+                    <th width="">N</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% if sequences %}
+                {% for result in sequences %}
+                    <tr>
+                        <td width=""><a href="http://www.eccdna.org:2022/detail?itemID={{ result.0 }}">{{ result.0 }}</a>
+                        </td>
+                        <td width="">{{ result.1 }}</td>
+                        <td width="">{{ result.2 }}</td>
+                        <td width="">{{ result.3 }}</td>
+                        <td width="">{{ result.4 }}</td>
+                        <td width="">{{ result.5 }}</td>
+                        {% if resultColumn == 7 %}
+                            <td width="">{{ result.6 }}</td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+                <tr>
+                    {% if resultColumn == 7 %}
+                        <td colspan="7"><p class="m-text">A total of <strong style="color: red">{{ resultSum }}</strong>
+                            data were searched!</p></td>
+                    {% else %}
+                        <td colspan="6"><p class="m-text">A total of <strong style="color: red">{{ resultSum }}</strong>
+                            data were searched!</p></td>
+                    {% endif %}
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">Sorry, not found!</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>

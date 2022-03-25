@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blast</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style type="text/css" media="all">
+        option.readonly {
+            background: #ccc;
+            color: #666;
+        }
+
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="/homepage" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="active m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container m-padded-tb-big">
+    <div class="ui top attached segment">
+        <h1 class="ui dividing header">
+            <i class="bookmark teal icon"></i>
+            <div class="content">
+                BLAST Databases
+                <div class="sub header">Here you can use the tools of blast.</div>
+            </div>
+        </h1>
+    </div>
+    <div class="ui bottom attached segment">
+        <div class="ui teal segment">
+            <h2 class="ui dividing header">
+                <div class="content">Enter Query EccDNA Sequence</div>
+            </h2>
+            <form class="ui large form" method="post" id="MainBlastForm" NAME="MainBlastForm"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="four fields">
+                    <div id="query" class="field">
+                        <h3 class="ui header">
+                            <i class="teal tags icon"></i>Program
+                        </h3>
+                        <div id="program" class="">
+                            <select id="program-select" name="program" class="ui dropdown" onchange="showform()">
+                                <option value="blastn">blastn</option>
+                                <option value="tblastn">tblastn</option>
+                                <option value="tblastx">tblastx</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="four fields">
+                    <div id="organism" class="field">
+                        <h3 class="ui header">
+                            <i class="teal tags icon"></i>Organism Choose
+                        </h3>
+                        <select id="organism-select" name="organism" class="ui dropdown"
+                                onchange="if(this.options[selectedIndex].className=='readonly')this.selectedIndex-1">
+                            <option value="Human" selected>Human</option>
+                            <option value="Saccharomyces cerevisiae">Saccharomyces cerevisiae</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div id="qseq" class="">
+                    <div id='nuleotide'>
+                        <h3 class="ui header" for="seq">
+                            Enter accession
+                            <text style="color: red">nuleotide</text>
+                            sequence(s)
+                        </h3>
+                    </div>
+                    <div id='peptide' style="display: none;">
+                        <h3 class="ui header" for="seq">
+                            Enter accession
+                            <text style="color: red">peptide</text>
+                            sequence(s)
+                        </h3>
+                    </div>
+                    <br>
+                    <textarea id="seq" class="reset" rows="5" cols="125" name="QUERY" spellcheck="false"
+                              autocomplete="off"></textarea>
+                </div>
+                <h3 class="ui header" for="upl">
+                    Or, upload file
+                </h3>
+                <div class="input all">
+                    <input type="file" id="upl" name="QUERYFILE"/>
+                </div>
+                <br>
+                <div class="four fields">
+                    <div id="evalue" class="field">
+                        <h3 class="ui header">
+                            <i class="teal tags icon"></i>E_value Choose
+                        </h3>
+                        <select id="evalue-select" name="evalue" class="ui dropdown"
+                                onchange="if(this.options[selectedIndex].className=='readonly')this.selectedIndex-1">
+                            <option value="10">10</option>
+                            <option value="1">1</option>
+                            <option value="0.5">0.5</option>
+                            <option value="0.1" selected>0.1</option>
+                            <option value="0.05">0.05</option>
+                            <option value="0.01">0.01</option>
+                            <option value="0.005">0.005</option>
+                            <option value="0.001">0.001</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="four fields">
+                    <div id="Max target sequences" class="field">
+                        <h3 class="ui header">
+                            <i class="teal tags icon"></i>Max target sequences
+                        </h3>
+                        <select id="Max_target_sequences-select" name="Max target sequences" class="ui dropdown"
+                                onchange="if(this.options[selectedIndex].className=='readonly')this.selectedIndex-1">
+                            <option value="100">100</option>
+                            <option value="50">50</option>
+                            <option value="20" selected>20</option>
+                            <option value="10">10</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="summary">
+                    <input type="submit" id="blastButton" value="BLAST" class="ui teal button"/>
+                </div>
+                <script type="text/javascript">
+                    function setButtonEnabled(flag) {
+                        document.getElementById("blastButton").disabled = flag ? undefined : "disabled";
+                    }
+
+                    function conchange() {
+                        if (document.getElementById("upl").value === "" && document.getElementById("seq").value === "")
+                            setButtonEnabled(false);
+                        else
+                            setButtonEnabled(true);
+                    }
+
+                    window.onload = conchange;
+                    document.getElementById("upl").onchange = conchange;
+                    document.getElementById("seq").onchange = conchange;
+                </script>
+                <script>
+                    const select = document.querySelector('#program-select')
+                    const nuleotide = document.querySelector('#nuleotide')
+                    const peptide = document.querySelector('#peptide')
+
+                    function showform() {
+                        if (select.value === "blastn") {
+                            nuleotide.style.display = 'block'
+                            peptide.style.display = 'none'
+                        } else if (select.value === "tblastn") {
+                            nuleotide.style.display = 'none'
+                            peptide.style.display = 'block'
+                        } else if (select.value === "tblastx") {
+                            nuleotide.style.display = 'block'
+                            peptide.style.display = 'none'
+                        } else {
+                            nuleotide.style.display = 'none'
+                            peptide.style.display = 'none'
+                        }
+                    }
+                </script>
+            </form>
+        </div>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>

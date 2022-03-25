@@ -1,0 +1,227 @@
+﻿{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style>
+        .m-p {
+            font-size: 16px;
+            text-align: justify;
+            text-justify: inter-ideograph;
+            letter-spacing: 1px !important;
+        }
+
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="/homepage" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="active m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container m-container-small animated fadeIn">
+    <div class="m-container m-padded-tb-big">
+        <div class="ui container">
+            <div class="ui top attached segment">
+                <div class="ui mobile reversed stackable grid">
+                    <div class="ui wide column">
+                        <a href="#" target="_blank">
+                            <img class="ui medium right floated rounded bordered image"
+                                 src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/about/aboutEccdna.4ztmp0x9tik0.png"
+                                 alt=""/>
+                        </a>
+                        <h2 class="ui header">Welcome to TeCD</h2>
+                        <h4 class="ui">(The eccDNA Collection Database)</h4>
+                        <p class="m-p">As we all know, DNA is located on the chromosome, but in fact, there is DNA
+                            outside the chromosome, and there is a special kind of circular DNA, which is to introduce
+                            the protagonist eccDNA. Circular DNA is a common form of DNA molecule in nature. For
+                            example, the genomic DNA of bacteria or yeast, bacterial plasmid, mitochondrial DNA and so
+                            on are all circular DNA molecules. In eukaryotes, there is a special class of circular DNA
+                            molecules, which are separated or detached from the normal genome, dissociated from the
+                            chromosome genome, and participate in physiological or pathological processes in a special
+                            way. Because they are independent DNA molecules outside the chromosome, they are
+                            collectively referred to as extrachromosomal DNA, and they are often circular, so they are
+                            called extrachromosomal circular DNA, or eccDNA for short. The particles of eccDNA is
+                            usually less than 1 kb and invisible by light microscopy. TeCD attempts to collect all
+                            existing information about eccDNA. For now, TeCD has been collecting the molecular
+                            information of eccDNA for Homo Sapiens and Saccharomyces Cerevisiae. The researchers can
+                            search the gene or location associated eccDNA from TeCD, and detect the sequence associated
+                            genes by BLAST tool.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui attached padded segment">
+                <div class="ui teal segment">
+                    <h1 class="ui dividing header">
+                        <i class="bookmark teal icon"></i>
+                        <div class="content">
+                            About
+                            <div class="sub header">Here you can find the meaning of the columns in the dataset.</div>
+                        </div>
+                    </h1>
+                    <div id="content" class="typo typo-selectio js-toc-content m-padded-lr-reponsive m-padded-mini">
+                        <table class="ui large table">
+                            <thead>
+                            <tr>
+                                <th>Columns</th>
+                                <th>About</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>ID</td>
+                                <td>The unique code of each eccDNA. Different organisms have different codes, such as
+                                    ecc_ H is Homo, and ecc_sc is saccharomyces cerevisiae.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>ORGANISM</td>
+                                <td>The organism of eccDNA.</td>
+                            </tr>
+                            <tr>
+                                <td>SAMPLE</td>
+                                <td>The state of cells to which eccDNA belongs.</td>
+                            </tr>
+                            <tr>
+                                <td>CHROM</td>
+                                <td>The chromosome of eccDNA.</td>
+                            </tr>
+                            <tr>
+                                <td>START</td>
+                                <td>The start site of eccDNA.</td>
+                            </tr>
+                            <tr>
+                                <td>END</td>
+                                <td>The chromosome of eccDNA.</td>
+                            </tr>
+                            <tr>
+                                <td>LENGTH</td>
+                                <td>The length of eccDNA.</td>
+                            </tr>
+                            <tr>
+                                <td>GENE</td>
+                                <td>The Genes on eccDNA.(You can learn more about gene by clicking on the link)</td>
+                            </tr>
+                            <tr>
+                                <td>SEQUENCE</td>
+                                <td>The sequence of eccDNA.</td>
+                            </tr>
+                            <tr>
+                                <td>number of read variants</td>
+                                <td>Number of read variants from soft-clipped (SC), discordant paired-end reads (PE) and
+                                    split reads (SE) supporting a circular structure.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>coverage level upstream</td>
+                                <td>Coverage level upstream, within and downstream of listed coordinates.</td>
+                            </tr>
+                            <tr>
+                                <td>three confidence levels of eccDNA</td>
+                                <td>Three confidence levels of eccDNA as minimal (lowqual), medium (conf) and highly
+                                    confident (hconf).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Copycount</td>
+                                <td>The copy count of amplified segments in cancer cell lines.</td>
+                            </tr>
+                            <tr>
+                                <td>ARS</td>
+                                <td>Autonomously replicating sequence (ARS) in the region.</td>
+                            </tr>
+                            <tr>
+                                <td>ALL_READS</td>
+                                <td>Number of all mapped reads.</td>
+                            </tr>
+                            <tr>
+                                <td>UNIQUE_READS</td>
+                                <td>Number of uniquely mapped reads.</td>
+                            </tr>
+                            <tr>
+                                <td>FPKM_ALL_READS</td>
+                                <td>Coverage of all mapped reads by fragments per kb from a million mapped reads
+                                    (FPKM).
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>UNIQUE_BP</td>
+                                <td>Longest region with a uniquely annotated sequence in bp.</td>
+                            </tr>
+                            <tr>
+                                <td>PMID</td>
+                                <td>PubMed ID of the datasets source.</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="ui bottom attached segment">
+                <div class="ui teal segment">
+                    <h1 class="ui dividing header">
+                        <i class="phone teal icon"></i>
+                        <div class="content">
+                            Contast Us
+                            <div class="sub header">If you have any questions or comments, please contact us.</div>
+                        </div>
+                    </h1>
+                    <div class="m-padded-lr-reponsive">
+                        <i>
+                            <p class="m-p">Xiaoping Liu</p>
+                            <p class="m-p">Hangzhou Institute for Advanced Study (HIAS)</p>
+                            <p class="m-p">University of Chinese Academy of Sciences (UCAS)</p>
+                            <p class="m-p">No.1 Xiangshan Branch, Hangzhou 310004, Zhejiang Province, China</p>
+                            <p class="m-p">TEL : +86-571-86080306</p>
+                            <p class="m-p">E-mail : xpliu@ucas.ac.cn</p>
+                        </i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>

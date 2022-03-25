@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{% static '/blast/img/favicon.ico' %}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <link rel="stylesheet" href="{% static '/blast/css/me.css' %}"/>
+    <style>
+        .m-p {
+            font-size: 18px;
+            text-align: justify;
+            text-justify: inter-ideograph;
+        }
+
+        .m-item {
+            font-weight: bold;
+            font-size: larger;
+        }
+    </style>
+</head>
+<body>
+<nav class="ui inverted attached segment m-padded-tb-mini m-shadow-small">
+    <div class="ui container">
+        <div class="ui inverted secondary stackable menu">
+            <h1 class="ui teal header item">
+                <img class="ui tiny image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/common/eccDNA.lklnoccxqz4.png">
+                <div class="content">
+                    TeCD
+                    <div class="sub header" style="color: white">The eccDNA Collection Database</div>
+                </div>
+            </h1>
+            <a href="/homepage" class="m-item item m-mobile-hide"><i class="home icon"></i>Home</a>
+            <a href="/search" class="m-item item m-mobile-hide"><i class="search icon"></i>Search</a>
+            <a href="/blast" class="m-item item m-mobile-hide"><i class="tags icon"></i>Blast</a>
+            <a href="/contribute" class="m-item item m-mobile-hide"><i class="clone icon"></i>Contribute</a>
+            <a href="/download" class="active m-item item m-mobile-hide"><i class="download icon"></i></i>Download</a>
+            <a href="/about" class="m-item item m-mobile-hide"><i class="info icon"></i>About</a>
+        </div>
+    </div>
+    <a href="#" class="ui menu toggle black icon button m-right-top m-mobile-show">
+        <i class="sidebar icon"></i>
+    </a>
+</nav>
+<div class="m-container m-padded-tb-big">
+    <div class="ui top attached segment">
+        <h1 class="ui dividing header">
+            <i class="teal download icon"></i>
+            <div class="content">
+                Download
+                <div class="sub header">Users can download eccDNA data from TeCD.</div>
+            </div>
+        </h1>
+    </div>
+    <div class="ui attached padded segment m-padded-lr-reponsive">
+        <div class="ui raised segment">
+            <p class="ui teal ribbon label" style="font-size: large">Datasets download</p>
+            <span></span>
+            <div>
+                <p></p>
+                <p class="m-p">&emsp;&emsp;All data searched by users on the search page can be downloaded. According to
+                    the classification, we provide the documents of two organisms: saccharomyces cerevisiae and homo
+                    sapiens. Users can download it according to their own needs.</p>
+                <p class="m-p">&emsp;&emsp;After downloading the datasets, you can see that the data results are in
+                    Excel (The following figures show parts of the data in the CSV file from TeCD).</p>
+                <p class="m-p">&emsp;&emsp;You can go to the about page, when you want to know the meaning of each
+                    column.</p>
+                <img class="ui centered huge bordered image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/download/downloadSc.csv.1tzr74c70hmo.png"
+                     title="saccharomyces cerevisiae.csv">
+                <p class="m-center m-margin-tb-tiny">saccharomyces cerevisiae.csv</p>
+                <br>
+                <img class="ui centered huge bordered image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/download/downloadH.csv.30ffa6dkpya0.png"
+                     title="Homo.csv"/>
+                <p class="m-center m-margin-tb-tiny">Homo.csv</p>
+                <br>
+            </div>
+            <p></p>
+            <p class="ui teal ribbon label" style="font-size: large">FASTA download</p>
+            <span></span>
+            <div>
+                <p></p>
+                <p class="m-p">&emsp;&emsp;We also provide FASTA files in blast library for users to download. The ID,
+                    CHROM, START, END and its sequence of each eccDNA are simply indicated in the file.</p>
+                <p class="m-p">&emsp;&emsp;The following is a partial display of the files.</p>
+                <img class="ui centered huge bordered image"
+                     src="https://cdn.jsdelivr.net/gh/ParallelLight/eccdna@master/download/downloadSc.fa.6zk8qnhaqdk0.png"
+                     width=800
+                     title="saccharomyces cerevisiae.fa"/>
+                <p class="m-center m-margin-tb-tiny">saccharomyces cerevisiae.fa</p>
+                <br>
+            </div>
+            <p></p>
+        </div>
+    </div>
+    <div class="ui bottom attached segment">
+        <div id="datadown_content" class="typo typo-selectio js-toc-content m-padded-lr-reponsive m-padded-mini">
+            <h3 class="ui teal header">
+                <i class="tag icon"></i>
+                <div class="content">Datasets download</div>
+            </h3>
+            <table class="ui teal large table">
+                <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Download Link</th>
+                    <th>File size</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Saccharomyces cerevisiae</td>
+                    <td>
+                        <div><a href="/download/1/">Saccharomyces_cerevisiae.csv</a></div>
+                    </td>
+                    <td>7.73MB</td>
+                </tr>
+                <tr>
+                    <td>Homo</td>
+                    <td>
+                        <div><a href="/download/2/">Homo.csv</a></div>
+                    </td>
+                    <td>645MB</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <p></p>
+        <div id="fadown_content" class="typo typo-selectio js-toc-content m-padded-lr-reponsive m-padded-mini">
+            <h3 class="ui teal header">
+                <i class="tag icon"></i>
+                <div class="content">FASTA download</div>
+            </h3>
+            <table class="ui teal large table">
+                <thead>
+                <tr>
+                    <th>Source</th>
+                    <th>Download Link</th>
+                    <th>File size</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Saccharomyces cerevisiae</td>
+                    <td>
+                        <div><a href="/download/3/">Saccharomyces_cerevisiae.fa</a></div>
+                    </td>
+                    <td>7.43MB</td>
+                </tr>
+                <tr>
+                    <td>Homo</td>
+                    <td>
+                        <div><a href="/download/4/">Homo.fa</a></div>
+                    </td>
+                    <td>606MB</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<footer class="ui inverted vertical segment m-padded-tb-big m-margin-top-larger">
+    <div class="ui center aligned container">
+        <div class="ui inverted section divider"></div>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">The eccDNA Collection Database</p>
+        <p class="m-text-thin m-text-spaced m-opacity-tiny">Copyright © 2022</p>
+    </div>
+</footer>
+</body>
+<script>
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+</script>
+</html>
